@@ -36,7 +36,7 @@ blue_ocean = df[(df['sugars_100g'] < 5.0) & (df['proteins_100g'] > 6.67)]
 # HEADER
 # ============================================
 st.title("🍫 The Sugar Trap — Market Gap Analysis")
-st.markdown("**Client:** Helix CPG Partners | **Analyst:** Godbless Godbey")
+st.markdown("**Client:** Helix CPG Partners | **Analyst:** Ghansah Godbless Boabeng")
 st.markdown("---")
 
 # ============================================
