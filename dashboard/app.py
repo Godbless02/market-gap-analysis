@@ -15,20 +15,34 @@ st.set_page_config(
 # ============================================
 # LOAD & PREPARE DATA
 # ============================================
+
 @st.cache_data
 def load_data():
+    import os
+
+    DATA_PATH = '../data/food.csv.gz'
+    DATA_URL = 'https://static.openfoodfacts.org/data/en.openfoodfacts.org.products.csv.gz'
+
+    # If running on Streamlit Cloud, download the data
+    if not os.path.exists(DATA_PATH):
+        import urllib.request
+        st.info('Downloading dataset for the first time... this may take a few minutes ⏳')
+        os.makedirs('../data', exist_ok=True)
+        urllib.request.urlretrieve(DATA_URL, DATA_PATH)
+
     df = pd.read_csv(
-        '../data/food.csv.gz',
+        DATA_PATH,
         sep='\t',
         compression='gzip',
         nrows=500000,
         low_memory=False
     )
-
+    
     cols_to_keep = [
         'product_name', 'categories_tags', 'ingredients_text',
         'sugars_100g', 'proteins_100g', 'fat_100g', 'fiber_100g'
     ]
+
     df = df[cols_to_keep].copy()
     df = df.dropna(subset=['product_name', 'sugars_100g', 'proteins_100g'])
     df = df[
