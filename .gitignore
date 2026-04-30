@@ -1,5 +1,5 @@
-data/
-*.csv
-*.gz
+data/food.csv.gz
+data/*.gz
+data/*.csv.gz
 __pycache__/
 .ipynb_checkpoints/

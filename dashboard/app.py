@@ -19,82 +19,10 @@ st.set_page_config(
 @st.cache_data
 def load_data():
     import os
-
-    DATA_PATH = '../data/food.csv.gz'
-    DATA_URL = 'https://static.openfoodfacts.org/data/en.openfoodfacts.org.products.csv.gz'
-
-    # If running on Streamlit Cloud, download the data
-    if not os.path.exists(DATA_PATH):
-        import urllib.request
-        st.info('Downloading dataset for the first time... this may take a few minutes ⏳')
-        os.makedirs('../data', exist_ok=True)
-        urllib.request.urlretrieve(DATA_URL, DATA_PATH)
-
-    df = pd.read_csv(
-        DATA_PATH,
-        sep='\t',
-        compression='gzip',
-        nrows=500000,
-        low_memory=False
-    )
-    
-    cols_to_keep = [
-        'product_name', 'categories_tags', 'ingredients_text',
-        'sugars_100g', 'proteins_100g', 'fat_100g', 'fiber_100g'
-    ]
-
-    df = df[cols_to_keep].copy()
-    df = df.dropna(subset=['product_name', 'sugars_100g', 'proteins_100g'])
-    df = df[
-        (df['sugars_100g'] >= 0) & (df['sugars_100g'] <= 100) &
-        (df['proteins_100g'] >= 0) & (df['proteins_100g'] <= 100) &
-        (df['fat_100g'].isna() | ((df['fat_100g'] >= 0) & (df['fat_100g'] <= 100)))
-    ]
-    df = df.reset_index(drop=True)
-
-    def assign_category(tags):
-        if not isinstance(tags, str):
-            return 'Other'
-        tags = tags.lower()
-        if any(k in tags for k in ['protein-powder', 'protein-shake', 'bodybuilding', 'dietary-supplement', 'meal-replacement', 'vitamin', 'mineral']):
-            return 'Supplements & Protein'
-        elif any(k in tags for k in ['soup', 'broth', 'bouillon', 'potage']):
-            return 'Soups'
-        elif any(k in tags for k in ['chocolate', 'candy', 'confectionery', 'sweet-snack', 'sugar-confectionery']):
-            return 'Confectionery'
-        elif any(k in tags for k in ['biscuit', 'cookie', 'cake', 'pastry', 'doughnut', 'wafer', 'muffin', 'brownie']):
-            return 'Biscuits & Cakes'
-        elif any(k in tags for k in ['snack', 'chip', 'crisp', 'popcorn', 'pretzel', 'cracker', 'puff']):
-            return 'Snacks'
-        elif any(k in tags for k in ['cereal', 'breakfast', 'granola', 'muesli', 'oat', 'porridge']):
-            return 'Cereals & Breakfast'
-        elif any(k in tags for k in ['bread', 'loaf', 'toast', 'bagel', 'roll', 'wrap', 'bakery', 'baked']):
-            return 'Bread & Bakery'
-        elif any(k in tags for k in ['spread', 'jam', 'honey', 'hazelnut', 'peanut-butter', 'marmalade']):
-            return 'Spreads'
-        elif any(k in tags for k in ['yogurt', 'yoghurt', 'cheese', 'milk', 'dairy', 'butter', 'cream']):
-            return 'Dairy'
-        elif any(k in tags for k in ['meat', 'chicken', 'beef', 'pork', 'sausage', 'chorizo', 'ham', 'bacon', 'poultry']):
-            return 'Meat & Poultry'
-        elif any(k in tags for k in ['seafood', 'fish', 'tuna', 'salmon', 'shrimp', 'prawn']):
-            return 'Seafood'
-        elif any(k in tags for k in ['beverage', 'drink', 'juice', 'soda', 'water', 'cola', 'tea', 'coffee', 'smoothie']):
-            return 'Beverages'
-        elif any(k in tags for k in ['sauce', 'condiment', 'spice', 'seasoning', 'dressing', 'vinegar', 'ketchup', 'mustard']):
-            return 'Sauces & Condiments'
-        elif any(k in tags for k in ['vegetable', 'fruit', 'plant-based', 'vegan', 'legume', 'bean', 'lentil', 'tofu', 'nuts']):
-            return 'Plant Based'
-        elif any(k in tags for k in ['pasta', 'rice', 'noodle', 'grain', 'flour', 'starch']):
-            return 'Grains & Pasta'
-        elif any(k in tags for k in ['frozen', 'ready-meal', 'prepared', 'instant']):
-            return 'Ready Meals'
-        else:
-            return 'Other'
-
-    df['primary_category'] = df['categories_tags'].apply(assign_category)
-    df = df[df['primary_category'] != 'Other'].copy()
-    df = df.reset_index(drop=True)
+    DATA_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'data', 'dashboard_data.csv')
+    df = pd.read_csv(DATA_PATH)
     return df
+
 
 # Load data
 with st.spinner('Loading data... this may take a minute ⏳'):
