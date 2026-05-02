@@ -20,6 +20,7 @@ The global snack market is overwhelmingly dominated by high sugar, low protein p
 **Presentation:** https://canva.link/ejeylvmmu8pu7h7
 
 **Notebook Export:** https://github.com/Godbless02/market-gap-analysis/blob/main/notebooks/analysis.html
+
 ---
 
 ## C. Technical Explanation
