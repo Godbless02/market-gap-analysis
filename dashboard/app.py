@@ -7,8 +7,8 @@ import plotly.express as px
 # PAGE CONFIG
 # ============================================
 st.set_page_config(
-    page_title="Sugar Trap — Market Gap Analysis",
-    page_icon="🍫",
+    page_title="Sugar Trap | Market Gap Analysis",
+    page_icon="",
     layout="wide"
 )
 
@@ -25,7 +25,7 @@ def load_data():
 
 
 # Load data
-with st.spinner('Loading data... this may take a minute ⏳'):
+with st.spinner('Loading data... this may take a minute '):
     df = load_data()
 
 sugar_avg = df['sugars_100g'].median()
@@ -35,7 +35,7 @@ blue_ocean = df[(df['sugars_100g'] < 5.0) & (df['proteins_100g'] > 6.67)]
 # ============================================
 # HEADER
 # ============================================
-st.title("🍫 The Sugar Trap — Market Gap Analysis")
+st.title(" The Sugar Trap : Market Gap Analysis")
 st.markdown("**Client:** Helix CPG Partners | **Analyst:** Ghansah Godbless Boabeng")
 st.markdown("---")
 
@@ -54,9 +54,9 @@ st.markdown("---")
 # KEY INSIGHT BOX
 # ============================================
 st.success("""
-💡 KEY INSIGHT: Based on the data, the biggest market opportunity is in **CONFECTIONERY**, 
+ KEY INSIGHT: Based on the data, the biggest market opportunity is in **CONFECTIONERY**, 
 specifically targeting products with at least **13g of protein** and less than **1g of sugar** per 100g.
-Only **3.8%** of confectionery products meet this criteria — meaning **96.2%** of the market 
+Only **3.8%** of confectionery products meet this criteria; meaning **96.2%** of the market 
 is stuck in the Sugar Trap. The top protein sources to use are **Soy, Nuts, and Peanuts**.
 """)
 
@@ -65,7 +65,7 @@ st.markdown("---")
 # ============================================
 # SCATTER PLOT
 # ============================================
-st.subheader("📊 Nutrient Matrix — Sugar vs Protein by Category")
+st.subheader(" Nutrient Matrix : Sugar vs Protein by Category")
 
 # Category filter
 all_cats = sorted(df['primary_category'].unique().tolist())
@@ -82,7 +82,7 @@ fig = px.scatter(
     x='sugars_100g',
     y='proteins_100g',
     color='primary_category',
-    title='Sugar vs Protein — The Nutrient Matrix',
+    title='Sugar vs Protein | The Nutrient Matrix',
     labels={
         'sugars_100g': 'Sugar per 100g (g)',
         'proteins_100g': 'Protein per 100g (g)',
@@ -105,7 +105,7 @@ st.markdown("---")
 # ============================================
 # OPPORTUNITY SCORECARD
 # ============================================
-st.subheader("🎯 Market Opportunity Scorecard (Candidate's Choice)")
+st.subheader(" Market Opportunity Scorecard (Candidate's Choice)")
 st.markdown("*Custom metric: Gap Size × Market Size — higher score = bigger opportunity*")
 
 opportunity_data = []
@@ -151,7 +151,7 @@ st.markdown("---")
 # ============================================
 # HIDDEN GEM
 # ============================================
-st.subheader("💎 The Hidden Gem — Top Protein Sources")
+st.subheader(" The Hidden Gem : Top Protein Sources")
 st.markdown("*Analyzing ingredients of High Protein Confectionery products*")
 
 conf_high_protein = df[
@@ -186,9 +186,9 @@ fig3.update_layout(height=400, template='plotly_dark')
 st.plotly_chart(fig3, use_container_width=True)
 
 col1, col2, col3 = st.columns(3)
-col1.metric("🥇 #1 Protein Source", source_df.iloc[0]['Protein Source'], f"{source_df.iloc[0]['Product Count']} products")
-col2.metric("🥈 #2 Protein Source", source_df.iloc[1]['Protein Source'], f"{source_df.iloc[1]['Product Count']} products")
-col3.metric("🥉 #3 Protein Source", source_df.iloc[2]['Protein Source'], f"{source_df.iloc[2]['Product Count']} products")
+col1.metric(" #1 Protein Source", source_df.iloc[0]['Protein Source'], f"{source_df.iloc[0]['Product Count']} products")
+col2.metric(" #2 Protein Source", source_df.iloc[1]['Protein Source'], f"{source_df.iloc[1]['Product Count']} products")
+col3.metric(" #3 Protein Source", source_df.iloc[2]['Protein Source'], f"{source_df.iloc[2]['Product Count']} products")
 
 st.markdown("---")
-st.caption("Data Source: Open Food Facts | Analysis by Godbless Godbey | Helix CPG Partners Capstone")
+st.caption("Data Source: Open Food Facts | Analysis by Ghansah Godbless Boabeng | Helix CPG Partners Capstone")
